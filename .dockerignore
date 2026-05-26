@@ -1,0 +1,44 @@
+# Git
+.git
+.gitignore
+
+# Python/local env
+.venv
+venv
+env
+ENV
+__pycache__
+*.pyc
+.pytest_cache
+.mypy_cache
+.ruff_cache
+.ipynb_checkpoints
+
+# Secrets
+.env
+.env.*
+*.env
+!.env.example
+
+# Local Docker/app state
+.n8n
+.ollama
+
+# Generated project outputs; mounted as volumes at runtime
+data/feeds
+data/digests
+data/bibtex
+data/ris
+data/logs
+data/pdfs
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vscode
+.idea
+
+# Logs and temp files
+*.log
+*.tmp
+*.bak

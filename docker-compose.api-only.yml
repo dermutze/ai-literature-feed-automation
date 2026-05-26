@@ -1,0 +1,22 @@
+# Optional compose file for users who already run n8n separately.
+# Starts only the FastAPI service and mounts ./data and ./config.
+# Usage:
+#   docker compose -f docker-compose.api-only.yml up -d --build
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: literature-feed-api:latest
+    container_name: literature-feed-api
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+      - ./config:/app/config
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped

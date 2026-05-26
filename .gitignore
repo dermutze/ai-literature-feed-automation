@@ -1,0 +1,63 @@
+# Secrets and local environment files
+.env
+.env.*
+*.env
+!.env.example
+
+# Python caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Build/distribution artifacts
+build/
+dist/
+*.egg-info/
+
+# Local generated outputs
+data/feeds/*
+data/digests/*
+data/bibtex/*
+data/ris/*
+data/logs/*
+data/pdfs/*
+
+# Keep output folder structure
+!data/feeds/.gitkeep
+!data/digests/.gitkeep
+!data/bibtex/.gitkeep
+!data/ris/.gitkeep
+!data/logs/.gitkeep
+!data/pdfs/.gitkeep
+
+# n8n local storage
+.n8n/
+
+# Ollama local model storage
+.ollama/
+
+# Local databases / vector stores / temporary files
+*.sqlite
+*.sqlite3
+*.db
+*.tmp
+*.bak
+
+# Logs
+*.log
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

@@ -1,0 +1,38 @@
+profile_name: Bekheet Research Radar
+
+keywords:
+  - "SiOC"
+  - "silicon oxycarbide"
+  - "polymer derived ceramic"
+  - "polymer-derived SiOC"
+  - "hard carbon sodium ion battery"
+  - "carbon anode sodium ion battery"
+  - "carbon anode lithium ion battery"
+  - "biomass derived hard carbon"
+
+exclude_keywords:
+  - "fuel cell"
+  - "corrosion"
+  - "marine"
+  - "supercapacitor"
+  - "bone"
+  - "biomedical"
+  - "fault estimation"
+  - "energy management"
+  - "microbial"
+  - "gasification"
+
+research_description: >
+  Materials chemistry and AI-assisted literature mining focused on
+  polymer-derived ceramics, silicon oxycarbide (SiOC), hard carbon,
+  sodium/lithium ion battery anodes, electrochemical energy storage,
+  and AI/RAG workflows for scientific literature.
+
+sources:
+  crossref: true
+  arxiv: true
+  semantic_scholar: true
+
+max_results_per_keyword: 15
+lookback_days: 30
+min_relevance_score: 35

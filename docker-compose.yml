@@ -1,0 +1,63 @@
+# Production Docker Compose for Project 1: Literature Feed Automation
+#
+# Default stack starts:
+#   - literature-feed-api
+#   - literature-n8n
+#
+# Ollama is optional and disabled by default through the "ollama" profile.
+# Start it only when you want a separate Docker Ollama instance:
+#   docker compose --profile ollama up -d --build
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: literature-feed-api:latest
+    container_name: literature-feed-api
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+      - ./config:/app/config
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: literature-n8n
+    ports:
+      - "5678:5678"
+    environment:
+      - TZ=${TZ:-Europe/Berlin}
+      - N8N_HOST=${N8N_HOST:-localhost}
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=${N8N_PROTOCOL:-http}
+      - N8N_BASIC_AUTH_ACTIVE=${N8N_BASIC_AUTH_ACTIVE:-false}
+      - N8N_BASIC_AUTH_USER=${N8N_BASIC_AUTH_USER:-}
+      - N8N_BASIC_AUTH_PASSWORD=${N8N_BASIC_AUTH_PASSWORD:-}
+      - N8N_COMMUNITY_PACKAGES_ENABLED=true
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+    volumes:
+      - ${N8N_HOME:-./.n8n}:/home/node/.n8n
+      - ./data:/home/node/.n8n-files
+      - ./:/workspace
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: literature-ollama
+    profiles:
+      - ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ${OLLAMA_HOME:-./.ollama}:/root/.ollama
+    restart: unless-stopped
