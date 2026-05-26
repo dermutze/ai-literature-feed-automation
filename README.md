@@ -62,6 +62,26 @@ n8n can be used to:
 
 ---
 
+## System Architecture
+
+```text
+Crossref / Semantic Scholar / arXiv
+                  ↓
+        Literature Collection
+                  ↓
+         Ranking + Filtering
+                  ↓
+      Ollama AI Summarization
+                  ↓
+ BibTeX / RIS / Markdown Export
+                  ↓
+          FastAPI Endpoint
+                  ↓
+          n8n Automation
+                  ↓
+        Email Digest Delivery
+```
+
 ## Project Structure
 
 ```text
@@ -457,18 +477,34 @@ Possible extensions:
 
 ---
 
+
 ## License
 
-Add a license file before public release if this repository will be shared publicly.
 
-Common choices:
+This project is licensed under the MIT License.
 
-- MIT License
-- Apache License 2.0
-- GPLv3
+See the [LICENSE](LICENSE) file for details.
 
 ---
 
 ## Citation / Attribution
 
 If this project helps your research workflow, consider citing or linking to the repository in related documentation, talks, or project pages.
+
+## Disclaimer
+
+This project provides AI-assisted literature collection and summarization for research support purposes only.
+
+Generated summaries may contain inaccuracies or incomplete interpretations. Always verify scientific claims, numerical values, and conclusions directly from the original publications.
+
+## Contributing
+
+Contributions, suggestions, and workflow improvements are welcome.
+
+Possible contribution areas include:
+- additional literature sources
+- improved ranking logic
+- RAG integration
+- dashboard extensions
+- citation manager integrations
+- visualization tools
