@@ -3,19 +3,28 @@ import urllib.request
 import urllib.parse
 import xml.etree.ElementTree as ET
 
-# 1. Titel der App und Erklärung
+# 1. Titel der App
 st.set_page_config(page_title="Ti64 & AM Literatur-Sucher", page_icon="🔬")
 st.title("🔬 Ti64 & AM Literatur-Sucher")
 st.write("Dieses Tool sucht live auf arXiv nach Fachartikeln und bereitet den Text für deine Firmen-KI vor.")
 
 st.write("---")
 
-# 2. Interaktives Eingabefeld für deine Suchbegriffe
+# 2. Einstellungen für die Suche
 st.subheader("🔍 Deine Suchbegriffe")
-st.write("Du kannst die Begriffe hier direkt ändern. Nutze 'OR' für Alternativen.")
 
-default_search = 'all:Ti6Al4V OR all:Ti64 OR all:"additive manufacturing titanium"'
+# Vereinfachte, robuste Suchanfrage ohne komplizierte all:-Präfixe
+default_search = 'Ti6Al4V AND "additive manufacturing"'
 user_query = st.text_input("Suchanfrage an die arXiv-Datenbank:", value=default_search)
+
+# Neues Auswahlmenü für die Sortierung (behebt das Zeitraum-Problem!)
+sort_by_choice = st.selectbox(
+    "Wie sollen die Artikel sortiert werden?",
+    options=["Beste Treffer (Relevanz)", "Neueste zuerst (Datum)"]
+)
+
+# Übersetzung für die arXiv-API
+sort_by_api = "relevance" if "Relevanz" in sort_by_choice else "submittedDate"
 
 # Schieberegler für die Anzahl der Ergebnisse
 max_results = st.slider("Wie viele Artikel möchtest du finden?", min_value=1, max_value=10, value=5)
@@ -26,15 +35,15 @@ st.write("---")
 if st.button("🚀 Starte Live-Suche auf arXiv"):
     st.info("Suche läuft... Artikel werden direkt von der arXiv-Datenbank abgerufen.")
     
-    # Parameter für die Internetadresse (URL) sauber verpacken
+    # Parameter für die API zusammenbauen
     params = {
         "search_query": user_query,
         "max_results": max_results,
-        "sortBy": "submittedDate",
+        "sortBy": sort_by_api,
         "sortOrder": "descending"
     }
     
-    url = f"http://arxiv.org?{urllib.parse.urlencode(params)}"
+    url = f"http://export.arxiv.org/api/query?{urllib.parse.urlencode(params)}"
     
     try:
         # Daten von arXiv abrufen
@@ -44,13 +53,13 @@ if st.button("🚀 Starte Live-Suche auf arXiv"):
         
         # XML-Daten auswerten
         root = ET.fromstring(xml_data)
-        namespaces = {'atom': 'http://w3.org'}
+        namespaces = {'atom': 'http://www.w3.org/2005/Atom'}
         entries = root.findall('atom:entry', namespaces)
         
         if not entries:
-            st.warning("Keine Artikel zu diesen Begriffen gefunden. Versuche, die Suchbegriffe etwas allgemeiner zu formulieren.")
+            st.warning("Keine Artikel gefunden. Tipp: Versuche die Suche noch einfacher zu gestalten, z. B. nur 'Ti6Al4V'.")
         else:
-            st.success(f"Erfolgreich {len(entries)} aktuelle Fachartikel gefunden!")
+            st.success(f"Erfolgreich {len(entries)} Fachartikel gefunden!")
             st.write("---")
             
             # Jeden gefundenen Artikel anzeigen
