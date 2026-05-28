@@ -9,8 +9,8 @@ st.write("Dieses Tool sucht wissenschaftliche Arbeiten auf arXiv und bereitet di
 if st.button("Starte Literatursuche & Text-Extraktion"):
     st.info("Die Suche läuft... Arbeiten werden von arXiv abgerufen (ca. 1 Minute).")
     
-    # Der Trick: Wir fügen das aktuelle Verzeichnis explizit zum Python-Pfad hinzu
-    cmd = "import sys; sys.path.append(os.getcwd()); from src.main import main; main()"
+    # JETZT KORREKT: 'import os' direkt im Befehl hinzugefügt
+    cmd = "import sys, os; sys.path.append(os.getcwd()); from src.main import main; main()"
     result = subprocess.run(["python", "-c", cmd], capture_output=True, text=True)
     
     # Pfad zu den gefundenen Rohdaten/Artikeln im Projekt
